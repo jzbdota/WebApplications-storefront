@@ -86,4 +86,4 @@ class Address(models.Model):
         Customer,
         on_delete=models.CASCADE,
         )
-
+    zipcode = models.CharField(max_length=255)
