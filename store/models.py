@@ -4,7 +4,7 @@ from django.db import models
 class Collection(models.Model):
     title = models.CharField(max_length=255)
     # circular dependency
-    # do not create the reverse relationship by related_name = "+"
+    # do not create the reverse relationship by setting related_name = "+"
     featured_product = models.ForeignKey(
         'Product',
         on_delete = models.SET_NULL,
@@ -15,7 +15,7 @@ class Collection(models.Model):
 class Product(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
-    unit_price = models.DecimalField(6, 2)
+    unit_price = models.DecimalField(max_digits=6, decimal_places=2)
     inventory = models.PositiveIntegerField()
     last_update = models.DateTimeField(auto_now=True)
     # do not delete product if we delete the collection
@@ -65,7 +65,7 @@ class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.PROTECT)
     order = models.ForeignKey(Order, on_delete=models.PROTECT)
     quantity = models.PositiveSmallIntegerField()
-    unit_price = models.DecimalField(6, 2)
+    unit_price = models.DecimalField(max_digits=6, decimal_places=2)
 
 class Cart(models.Model):
     id = models.UUIDField(primary_key=True)
