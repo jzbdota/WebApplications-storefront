@@ -12,6 +12,11 @@ class Collection(models.Model):
         related_name="+"
     )
 
+    def __str__(self) -> str:
+        return self.title
+    class Meta:
+        ordering = ['title']
+
 class Product(models.Model):
     title = models.CharField(max_length=255)
     # slug is for search engine to find it easier
@@ -23,6 +28,7 @@ class Product(models.Model):
     last_update = models.DateTimeField(auto_now=True)
     # do not delete product if we delete the collection
     collection = models.ForeignKey(Collection, on_delete=models.PROTECT)
+
 
 class Customer(models.Model):
     MEMBERSHIP_BRONZE = 'B'
@@ -44,6 +50,7 @@ class Customer(models.Model):
         choices = MEMBERSHIP_CHOICES,
         default = 'B'
         )
+
 
 class Order(models.Model):
     PAYMENT_STATUS_PENDING = 'P'
