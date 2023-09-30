@@ -12,6 +12,7 @@ from . import models
 @admin.register(models.Collection)
 class CollectionAdmin(admin.ModelAdmin):
     list_display = ['title', 'products_count']
+    search_fields = ['title']
 
     @admin.display(ordering='products_count')
     def products_count(self, collection):
@@ -52,6 +53,8 @@ class ProductAdmin(admin.ModelAdmin):
     list_select_related = ['collection']
     ordering = ['title']
     actions = ['clear_inventory']
+    prepopulated_fields = {'slug': ['title']} # does not work, why?
+    autocomplete_fields = ['collection']
 
     def collection_title(self, product):
         return product.collection.title
@@ -93,8 +96,9 @@ class CustomerAdmin(admin.ModelAdmin):
 class OrderAdmin(admin.ModelAdmin):
     list_display = ['id', 'customer_name', 'payment_status']
     list_editable = ['payment_status']
-    ordering = ['id']
     list_select_related = ['customer']
+    ordering = ['id']
+    autocomplete_fields = ['customer_name']
     # if one wants to sort it by name, def class Meta in Customer Model
     def customer_name(self, order):
         customer = order.customer
