@@ -28,11 +28,26 @@ class CollectionAdmin(admin.ModelAdmin):
 # to sort the collections, def class Meta in the model
 # or do it in the custom admin class, ordering =
 
+class InventoryFilter(admin.SimpleListFilter):
+    title = 'inventory'
+    parameter_name = 'inventory'
+    low_inventory = '<10'
+
+    def lookups(self, request: Any, model_admin: Any) -> list[tuple[Any, str]]:
+        return [
+            (self.low_inventory, 'Low'),
+        ]
+    
+    def queryset(self, request: Any, queryset: QuerySet[Any]) -> QuerySet[Any] | None:
+        if self.value() == self.low_inventory:
+            return queryset.filter(inventory__lt=10)
+
 @admin.register(models.Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['title', 'unit_price', 'inventory_status', 
                     'collection_title']
     list_editable = ['unit_price']
+    list_filter = ['collection', 'last_update', InventoryFilter]
     list_per_page = 100
     list_select_related = ['collection']
     ordering = ['title']
