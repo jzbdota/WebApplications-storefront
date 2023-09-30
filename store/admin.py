@@ -94,12 +94,10 @@ class CustomerAdmin(admin.ModelAdmin):
 
 @admin.register(models.Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['id', 'customer_name', 'payment_status']
+    list_display = ['id', 'customer', 'payment_status']
     list_editable = ['payment_status']
     list_select_related = ['customer']
     ordering = ['id']
-    autocomplete_fields = ['customer_name']
+    autocomplete_fields = ['customer']
     # if one wants to sort it by name, def class Meta in Customer Model
-    def customer_name(self, order):
-        customer = order.customer
-        return customer.first_name + ' ' + customer.last_name
+    # for autocomplete_fields, redefine __str__ in the customer model

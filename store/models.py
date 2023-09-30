@@ -20,7 +20,7 @@ class Collection(models.Model):
 class Product(models.Model):
     title = models.CharField(max_length=255)
     # slug is for search engine to find it easier
-    slug = models.SlugField(default="-")
+    slug = models.SlugField()
     description = models.TextField()
     # decimalfield only accepts kwargs
     unit_price = models.DecimalField(max_digits=6, decimal_places=2)
@@ -50,7 +50,8 @@ class Customer(models.Model):
         choices = MEMBERSHIP_CHOICES,
         default = 'B'
         )
-
+    def __str__(self):
+        return self.first_name + " " + self.last_name
 
 class Order(models.Model):
     PAYMENT_STATUS_PENDING = 'P'
