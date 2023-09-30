@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator
 from django.db import models
 
 # Create your models here.
@@ -21,9 +22,13 @@ class Product(models.Model):
     title = models.CharField(max_length=255)
     # slug is for search engine to find it easier
     slug = models.SlugField()
-    description = models.TextField()
+    description = models.TextField(null=True, blank=True)
     # decimalfield only accepts kwargs
-    unit_price = models.DecimalField(max_digits=6, decimal_places=2)
+    unit_price = models.DecimalField(
+        max_digits=6, 
+        decimal_places=2,
+        validators=[MinValueValidator(0)]
+        )
     inventory = models.PositiveIntegerField()
     last_update = models.DateTimeField(auto_now=True)
     # do not delete product if we delete the collection

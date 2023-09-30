@@ -53,7 +53,8 @@ class ProductAdmin(admin.ModelAdmin):
     list_select_related = ['collection']
     ordering = ['title']
     actions = ['clear_inventory']
-    prepopulated_fields = {'slug': ['title']} # does not work, why?
+    search_fields = ['title']
+    prepopulated_fields = {'slug': ['title']}
     autocomplete_fields = ['collection']
 
     def collection_title(self, product):
@@ -92,12 +93,18 @@ class CustomerAdmin(admin.ModelAdmin):
             orders = Count('order')
         )
 
+class OrderItemInline(admin.TabularInline):
+    model = models.OrderItem
+    autocomplete_fields = ['product']
+    # extra = 0 # placeholder
+    # min_num, max_num
 @admin.register(models.Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = ['id', 'customer', 'payment_status']
     list_editable = ['payment_status']
     list_select_related = ['customer']
     ordering = ['id']
+    inlines = [OrderItemInline]
     autocomplete_fields = ['customer']
     # if one wants to sort it by name, def class Meta in Customer Model
     # for autocomplete_fields, redefine __str__ in the customer model
