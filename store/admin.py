@@ -1,5 +1,5 @@
 from typing import Any
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.db.models.query import QuerySet
 from django.db.models.aggregates import Count
 from django.http.request import HttpRequest
@@ -51,6 +51,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_per_page = 100
     list_select_related = ['collection']
     ordering = ['title']
+    actions = ['clear_inventory']
 
     def collection_title(self, product):
         return product.collection.title
@@ -60,6 +61,15 @@ class ProductAdmin(admin.ModelAdmin):
         if product.inventory < 10:
             return "Low"
         return "OK"
+    
+    @admin.action(description='Clear inventory')
+    def clear_inventory(self, request: Any, queryset: QuerySet[Any]):
+        updated_count = queryset.update(inventory = 0)
+        self.message_user(
+            request,
+            f'{updated_count} products were successfully updated.',
+            messages.SUCCESS
+        )
 
 @admin.register(models.Customer)
 class CustomerAdmin(admin.ModelAdmin):
