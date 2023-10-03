@@ -7,6 +7,9 @@ from django.contrib.auth.models import User
 class Tag(models.Model):
     label = models.CharField(max_length=255)
 
+    def __str__(self) -> str:
+        return self.label
+
 class TaggedItem(models.Model):
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
     # Type (product, video, article)
@@ -14,6 +17,7 @@ class TaggedItem(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey()
+
 
 class LikedItem(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
