@@ -5,12 +5,17 @@ from . import views
 router = routers.DefaultRouter()
 router.register('products', views.ProductViewSET, basename='products')
 router.register('collections', views.CollectionViewSet)
+router.register('carts', views.CartViewSet)
 
 # child router
 products_router = routers.NestedDefaultRouter(router, 'products', lookup='product')
 products_router.register('reviews', views.ReviewViewSet, basename='product-reviews')
 
+carts_router = routers.NestedDefaultRouter(router, 'carts', lookup='cart')
+carts_router.register('items', views.CartViewSet, basename='carts')
+
 urlpatterns = [
     path("", include(router.urls)),
-    path("", include(products_router.urls))
+    path("", include(products_router.urls)),
+    path("", include(carts_router.urls)),
 ]
