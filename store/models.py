@@ -32,7 +32,7 @@ class Product(models.Model):
     inventory = models.PositiveIntegerField()
     last_update = models.DateTimeField(auto_now=True)
     # do not delete product if we delete the collection
-    collection = models.ForeignKey(Collection, on_delete=models.PROTECT)
+    collection = models.ForeignKey(Collection, on_delete=models.PROTECT, related_name='products')
 
 
 class Customer(models.Model):
@@ -78,7 +78,7 @@ class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
 
 class OrderItem(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.PROTECT)
+    product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name="orderitems")
     order = models.ForeignKey(Order, on_delete=models.PROTECT)
     quantity = models.PositiveSmallIntegerField()
     unit_price = models.DecimalField(max_digits=6, decimal_places=2)
@@ -91,7 +91,6 @@ class CartItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
-
 class Address(models.Model):
     street = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
