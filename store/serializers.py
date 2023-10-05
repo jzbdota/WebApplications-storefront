@@ -60,6 +60,7 @@ class AddCartItemSerializer(serializers.ModelSerializer):
             'product_id',
             'quantity'
         ]
+        
     product_id = serializers.IntegerField()
 
     def validate_product_id(self, value):
@@ -86,11 +87,13 @@ class CartSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cart
         fields = ['id', 'items', 'total_price']
+
     id = serializers.UUIDField(read_only=True)
     items = CartItemSerializer(read_only=True, many=True)
     total_price = serializers.SerializerMethodField(
         method_name='get_total_price'
     )
+
     def get_total_price(self, cart: Cart) -> Decimal:
         total_price = Decimal(0)
         for item in cart.items.all():
