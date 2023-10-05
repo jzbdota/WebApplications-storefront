@@ -1,6 +1,8 @@
 from uuid import uuid4
 from django.core.validators import MinValueValidator
 from django.db import models
+from django.conf import settings
+from django.contrib import admin
 
 # Create your models here.
 class Collection(models.Model):
@@ -37,6 +39,9 @@ class Product(models.Model):
 
 
 class Customer(models.Model):
+    class Meta:
+        ordering = ['user__first_name', 'user__last_name']
+
     MEMBERSHIP_BRONZE = 'B'
     MEMBERSHIP_SILVER = 'S'
     MEMBERSHIP_GOLD = 'G'
@@ -46,9 +51,6 @@ class Customer(models.Model):
         (MEMBERSHIP_GOLD, 'Gold'),
     ]
 
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    email = models.EmailField(unique=True)
     phone = models.CharField(max_length=255)
     birth_date = models.DateField(null = True)
     membership = models.CharField(
@@ -56,10 +58,25 @@ class Customer(models.Model):
         choices = MEMBERSHIP_CHOICES,
         default = 'B'
         )
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
     def __str__(self):
-        return self.first_name + " " + self.last_name
+        return self.user.first_name + " " + self.user.last_name
+    
+    @admin.display(ordering='user__first_name')
+    def first_name(self):
+        return self.user.first_name
+    
+    @admin.display(ordering='user__last_name')
+    def last_name(self):
+        return self.user.last_name
 
 class Order(models.Model):
+    class Meta:
+        permissions = [
+            ('cancel_order', 'Can cancel order')
+        ]
+
     PAYMENT_STATUS_PENDING = 'P'
     PAYMENT_STATUS_COMPLETE = 'C'
     PAYMENT_STATUS_FAILED = 'F'
