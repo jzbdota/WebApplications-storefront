@@ -41,6 +41,9 @@ class Product(models.Model):
 class Customer(models.Model):
     class Meta:
         ordering = ['user__first_name', 'user__last_name']
+        permissions = [
+            ('view_history', 'Can view history'),
+        ]
 
     MEMBERSHIP_BRONZE = 'B'
     MEMBERSHIP_SILVER = 'S'
