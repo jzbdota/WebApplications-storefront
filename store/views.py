@@ -1,13 +1,15 @@
 from django.db.models.aggregates import Count
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
-from rest_framework.mixins import CreateModelMixin, DestroyModelMixin, RetrieveModelMixin
+from rest_framework.mixins import CreateModelMixin, DestroyModelMixin, RetrieveModelMixin, UpdateModelMixin
 from store.filters import ProductFilter
-from store.models import Cart, CartItem, Collection, OrderItem, Product, Review
+from store.models import Cart, CartItem, Collection, Customer, OrderItem, Product, Review
 from store.paginations import DefaultPagination
-from store.serializers import AddCartItemSerializer, CartItemSerializer, CartSerializer, CollectionSerializer, ProductSerializer, ReviewSerializer, UpdateCartItemSerializer
+from store.serializers import AddCartItemSerializer, CartItemSerializer, CartSerializer, CollectionSerializer, CustomerSerializer, ProductSerializer, ReviewSerializer, UpdateCartItemSerializer
 
 # Create your views here.
 class ProductViewSet(ModelViewSet):
@@ -75,3 +77,31 @@ class CartItemViewSet(ModelViewSet):
         return CartItem.objects.\
             filter(cart_id=self.kwargs['cart_pk']).\
             select_related('product')
+
+class CustomerViewSet(
+    CreateModelMixin,
+    RetrieveModelMixin,
+    UpdateModelMixin,
+    GenericViewSet
+):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
+    # permission_classes = [IsAuthenticated]
+
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return [AllowAny()]
+        return [IsAuthenticated()]
+
+    @action(detail=False, methods=["GET", "PUT"])
+    def me(self, request):
+        user = request.user
+        customer, _ = Customer.objects.get_or_create(user_id = user.id)
+        if request.method == "GET":
+            serializer = CustomerSerializer(customer)
+            return Response(serializer.data)
+        if request.method == "PUT":
+            serializer = CustomerSerializer(customer, data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data)
