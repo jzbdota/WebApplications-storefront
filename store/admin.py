@@ -43,6 +43,15 @@ class InventoryFilter(admin.SimpleListFilter):
         if self.value() == self.low_inventory:
             return queryset.filter(inventory__lt=10)
 
+class ProductImageInline(admin.TabularInline):
+    model = models.ProductImage
+    readonly_fields = ['thumbnail']
+
+    def thumbnail(self, instance):
+        if instance.image.name != "":
+            return format_html(f'<img src="{instance.image.url}" class="thumbnail" />')
+        return ''
+
 @admin.register(models.Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['title', 'unit_price', 'inventory_status', 
@@ -53,6 +62,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_select_related = ['collection']
     ordering = ['title']
     actions = ['clear_inventory']
+    inlines = [ProductImageInline]
     search_fields = ['title']
     prepopulated_fields = {'slug': ['title']}
     autocomplete_fields = ['collection']
@@ -74,6 +84,11 @@ class ProductAdmin(admin.ModelAdmin):
             f'{updated_count} products were successfully updated.',
             messages.SUCCESS
         )
+
+    class Media:
+        css = {
+            'all': ['store/styles.css']
+        }
 
 @admin.register(models.Customer)
 class CustomerAdmin(admin.ModelAdmin):
