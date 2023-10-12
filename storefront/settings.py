@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'django_filters',
     'corsheaders',
     'rest_framework',
-    'debug_toolbar',
     'djoser',
     'playground',
     'store',
@@ -60,8 +59,18 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
+
+if DEBUG:
+    INSTALLED_APPS += [
+        'debug_toolbar',
+        'silk',
+    ]
+
+    MIDDLEWARE += [
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
+        'silk.middleware.SilkyMiddleware',
+    ]
 
 INTERNAL_IPS = [
     # ...
