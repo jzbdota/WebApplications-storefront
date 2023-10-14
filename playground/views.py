@@ -1,12 +1,17 @@
 import requests
+import logging
 from django.shortcuts import render
-from django.core.cache import cache
+from rest_framework.views import APIView
 
-# Create your views here.
-def say_hello(request):
-    key = 'httpbin_result'
-    if cache.get(key) is None:
-        response = requests.get('https://httpbin.org/delay/2')
+logger = logging.getLogger(__name__)
+
+class HelloView(APIView):
+    def get(self, request):
+        try:
+            logger.info('Calling httpbin')
+            response = requests.get('https://httpbin.org/delay/2')
+            logger.info('Received the Response')
+        except requests.ConnectionError:
+            logger.critical('httpbin is off')
         data = response.json()
-        cache.set(key, data)
-    return render(request, 'hello.html', {'name': cache.get(key)})
+        return render(request, 'hello.html', {'name': data})

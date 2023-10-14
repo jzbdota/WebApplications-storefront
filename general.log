@@ -1,0 +1,27 @@
+2023-10-14 04:32:38,339 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2023-10-14 04:32:41,593 (INFO) - playground.views - Calling httpbin
+2023-10-14 04:32:44,735 (INFO) - playground.views - Received the Response
+2023-10-14 04:33:04,405 (INFO) - playground.views - Calling httpbin
+2023-10-14 04:33:07,756 (INFO) - playground.views - Received the Response
+2023-10-14 04:49:50,938 (INFO) - django.utils.autoreload - /home/yangy/storefront/manage.py changed, reloading.
+2023-10-14 04:51:07,340 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2023-10-14 04:51:41,254 (WARNING) - django.request - Unauthorized: /store/collections/
+2023-10-14 04:51:41,259 (WARNING) - django.request - Forbidden: /store/collections/
+2023-10-14 04:51:41,262 (WARNING) - django.request - Bad Request: /store/collections/
+2023-10-14 04:53:20,855 (INFO) - django.utils.autoreload - /home/yangy/storefront/storefront/settings/common.py changed, reloading.
+2023-10-14 04:53:21,066 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2023-10-14 04:53:29,179 (WARNING) - django.request - Unauthorized: /store/collections/
+2023-10-14 04:53:29,183 (WARNING) - django.request - Forbidden: /store/collections/
+2023-10-14 04:53:29,186 (WARNING) - django.request - Bad Request: /store/collections/
+2023-10-14 04:54:30,024 (INFO) - django.utils.autoreload - /home/yangy/storefront/storefront/settings/common.py changed, reloading.
+2023-10-14 04:54:30,232 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2023-10-14 04:55:19,200 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2023-10-14 04:55:25,432 (WARNING) - django.request - Unauthorized: /store/collections/
+2023-10-14 04:55:25,435 (WARNING) - django.request - Forbidden: /store/collections/
+2023-10-14 04:55:25,437 (WARNING) - django.request - Bad Request: /store/collections/
+2023-10-14 04:55:42,113 (WARNING) - django.request - Unauthorized: /store/collections/
+2023-10-14 04:55:42,116 (WARNING) - django.request - Forbidden: /store/collections/
+2023-10-14 04:55:42,119 (WARNING) - django.request - Bad Request: /store/collections/
+2023-10-14 04:56:59,793 (WARNING) - django.request - Unauthorized: /store/collections/
+2023-10-14 04:56:59,805 (WARNING) - django.request - Forbidden: /store/collections/
+2023-10-14 04:56:59,814 (WARNING) - django.request - Bad Request: /store/collections/
