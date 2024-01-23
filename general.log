@@ -25,3 +25,6 @@
 2023-10-14 04:56:59,793 (WARNING) - django.request - Unauthorized: /store/collections/
 2023-10-14 04:56:59,805 (WARNING) - django.request - Forbidden: /store/collections/
 2023-10-14 04:56:59,814 (WARNING) - django.request - Bad Request: /store/collections/
+2023-11-06 20:57:10,563 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2023-11-06 20:57:14,069 (WARNING) - django.request - Not Found: /favicon.ico
+2023-11-06 20:57:36,447 (WARNING) - django.request - Method Not Allowed: /store/carts/
